@@ -1,61 +1,102 @@
+import os
 import csv
 import webbrowser
-import tkinter.font
-from tkinter import *
 
-root = Tk()
-
-root.geometry("300x600") #display dari ukuran tkinter
-root.title("TaskMaster") #memberikan nama dari aplikasi
-root.iconbitmap("icon_task.ico") #menmabah icon
-
-changefont = tkinter.font.Font(size=20)
-
-judul = Label(root, text = "REGISTER", font = changefont)
-judul.place(x=80, y = 15)
-
-labelfr = LabelFrame(root, text = "result", padx=20, pady=20)
-labelfr.place(x = 60, y=380)
-
-nama = Label(root, text ="Firts Name")
-nama2 = Label(root, text="Last Name")
-email = Label(root, text="Email")
-username = Label(root, text="Username")
-password = Label(root, text="Password")
-
-e1 = Entry(root, width=40)
-e2 = Entry(root, width=40)
-e3 = Entry(root, width=40)
-e4 = Entry(root, width=40)
-e5= Entry(root, width=40, show="*")
-
-nama.place(x=20, y=60)
-nama2.place(x=20, y=100)
-email.place(x=20, y=140)
-username.place(x=20, y=180)
-password.place(x=20, y=220)
-
-e1.place(x=20, y=80)
-e2.place(x=20, y=120)
-e3.place(x=20, y=160)
-e4.place(x=20, y=200)
-e5.place(x=20, y=240)
-
-def cetak():
-    class user:
-        def __init__(self,nama,nama2,email,username,password):
-            self.nama = nama
-            self.nama2 =nama2
-            self.email = email
-            self.username = username
-            self.password = password
+def print_header():
+    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+    print('||                            Task Master                          ||')
+    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+    print('||                 Developer by Aliza Nurfitrian [ALL]             ||')
+    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+    
+def sign_up():
+    print_header()
+    
+    print('--------------------------------------------------------------------')
+    name = input("|| Nama Lengkap :")
+    nim = input('|| NIM : ')
+    jurusan = input('|| Jurusan : ')
+    print('--------------------------------------------------------------------')
+    email = input('|| Email : ')
+    password = input('|| Password : ')
+    print('--------------------------------------------------------------------')
+    
+    databaseStudents = []
+    
+    with open ("Database Students Telkom.csv", 'r') as file:
+        csv_reader = csv.reader(file, delimiter='|')
         
-        def hasil(self):
-            lbl = Label(labelfr, text="Firts Name ="+self.nama+"\nLast Name ="+self.nama2+"\nEmail ="+self.email+"\nUsername ="+self.username+"\nPassword ="+self.password).grid()
+        for row in csv_reader:
+            databaseStudents.append({'name' : row[0], 'nim' : row[1], 'jurusan' : row[2], 'email' :row[3], 'password' : row[4]})
+            
+    nim_ada = False
 
-    ditampilkan= user(e1.get(), e2.get(), e3.get(), e4.get(), e5.get())
-    ditampilkan.hasil()
+    for account in databaseStudents :
+        if nim == account['nim']:
+            print("NIM sudah digunakan, silahkan periksa kembali NIM anda !!")
+            nim_ada = True
+            break
+        
+    if nim_ada == False:
+        newdata = {'name': name, 'nim': nim, 'jurusan': jurusan, 'email' : email, 'password': password}
+        with open('Database Students Telkom.csv', 'a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=newdata.keys())
+            writer.writerow(newdata)
+            
+    print('  > SINKRONSASI DATA TELAH SESUAI DENGAN Learning Management System < ')
+    
+    os.system('pause')
+    os.system('cls')
+    menu()
+    
+def sign_in():
+    print_header()
+    
+    print('--------------------------------------------------------------------')
+    email_input = input("|| Email : ")
+    nim_input = input("|| NIM : ")
+    print('--------------------------------------------------------------------')
+    
+    databaseStudents = []
+    with open("Database Students Telkom.csv", 'r') as file:
+        csv_reader = csv.reader(file, delimiter= '|')
+        for row in csv_reader:
+            databaseStudents.append({'email' : row[3], 'nim' : row[1]})
+            
+    datalogin = []
+    for i in databaseStudents:
+        if email_input == i['email'] and nim_input ==
+     
+def logout():
+    print('Success Logout !!!')
 
-btn = Button(root, text ="Submit", command=cetak).place(x=120 , y=300)
-
-root.mainloop()
+def menu():
+    print_header()
+    
+    print('---------------------------------------------------------------------')
+    print('|| [1]. Sign Up for Students                                       ||')
+    print('|| [2]. Sign In for Students                                       ||')
+    print('|| [3]. Logout                                                     ||')
+    print('---------------------------------------------------------------------')
+    pilihan = input('/> ')
+    print('\n')
+    
+    if pilihan == '1':
+        os.system('cls')
+        sign_up()
+        
+    elif pilihan == '2':
+        os.system('cls')
+        sign_in()
+    
+    elif pilihan == '3':
+        os.system('cls')
+        logout()
+    
+    else: 
+        print("Your selection is not in the menu !!")
+        os.system('cls')
+        menu()
+    
+# all function
+menu()
