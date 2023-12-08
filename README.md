@@ -4,7 +4,7 @@
 
 Project : Py-Ver.4
 
-"TaskMaster" is a simple task management application built using Tkinter, a GUI (Graphical User Interface) toolkit for Python. The app is designed to assist users in organizing and tracking their to-do lists easily. Users can add, edit, and delete tasks that need to be done
+"TaskMaster" is a simple task management application built using Python. This application is designed to help users organize and track their to-do lists easily and simultaneously connect with LMS (Learning Management System). Users can add, edit, and delete tasks that need to be done
 
 Developer :  
 - [Aliza Nurfitrian Meizahra ](https://github.com/Alizaaaja4) [ALL]
