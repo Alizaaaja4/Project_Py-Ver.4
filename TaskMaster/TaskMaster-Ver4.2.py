@@ -53,19 +53,34 @@ def sign_in():
     print_header()
     
     print('--------------------------------------------------------------------')
-    email_input = input("|| Email : ")
     nim_input = input("|| NIM : ")
+    email_input = input("|| Email : ")
+    print('--------------------------------------------------------------------')
+    password_input = input("|| Password : ")
     print('--------------------------------------------------------------------')
     
     databaseStudents = []
     with open("Database Students Telkom.csv", 'r') as file:
-        csv_reader = csv.reader(file, delimiter= '|')
+        csv_reader = csv.reader(file, delimiter=',')
         for row in csv_reader:
-            databaseStudents.append({'email' : row[3], 'nim' : row[1]})
+            databaseStudents.append({'email': row[3], 'nim': row[1], 'password': row[4]})
             
     datalogin = []
     for i in databaseStudents:
-        if email_input == i['email'] and nim_input ==
+        if email_input == i['email'] and nim_input == i['nim'] and password_input == i['password']:
+            datalogin.append(i)
+            print("\n Berhasil Login !!")
+            os.system('pause')
+            os.system('cls')
+            dashboard_menu()
+            return  # Keluar dari fungsi sign_in() setelah berhasil login
+            
+    if len(datalogin) == 0:
+        print("Akun anda belum terdaftar !! ")
+    
+    os.system('pause')
+    os.system('cls')
+    menu()
      
 def logout():
     print('Success Logout !!!')
@@ -97,6 +112,69 @@ def menu():
         print("Your selection is not in the menu !!")
         os.system('cls')
         menu()
+
+def user_account():
+    print_header()
+    nim_input = input("Enter your NIM: ")
     
+    with open("Database Students Telkom.csv", 'r') as file:
+        csv_reader = csv.reader(file)
+        found = False
+        
+        for row in csv_reader:
+            if row[1] == nim_input:
+                found = True
+                print('---------------------------------------------------------------------')
+                print(f"|| Nama Lengkap : {row[0]}{' ' * (29-len(row[0]))} | Email : {row[3]}{' ' * (30 - len(row[3]))}")
+                print('---------------------------------------------------------------------')
+                print(f"|| Jurusan : {row[2]}{' ' * (73 - len(row[2]))}    | NIM   : {row[1]}{' ' * (30 - len(row[1]))}")
+                print('---------------------------------------------------------------------')
+                break
+        
+        if not found:
+            print('Akun tidak ditemukan')
+    
+    os.system('pause')
+    os.system('cls')
+    dashboard_menu()
+
+def to_do_list():
+    print('print')
+    
+def dashboard_menu():
+    print_header()
+    
+    print('---------------------------------------------------------------------')
+    print('|| [1]. Lihat Akun       [2]. Website Learning Management System   ||')
+    print('|| [3]. To Do List       [4]. Keluar                               ||')
+    print('---------------------------------------------------------------------')
+    pilihan = input("\> ")
+    print('\n')
+    
+    if pilihan == '1':
+        os.system('cls')
+        user_account()
+    
+    elif pilihan == '2':
+        os.system('cls')
+        print('Continue to visit the site ?')
+        os.system('pause')
+        webbrowser.open('https://lms.telkomuniversity.ac.id/my/')
+        
+        dashboard_menu()
+    
+    elif pilihan == '3':
+        os.system('cls')
+        to_do_list()
+    
+    elif pilihan == '4':
+        os.system('cls')
+        menu()
+    
+    else:
+        print("Your selection is not in the menu !!")
+        os.system('cls')
+        dashboard_menu()
+        
 # all function
 menu()
