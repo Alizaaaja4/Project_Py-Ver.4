@@ -24,7 +24,7 @@ def sign_up():
     databaseStudents = []
     
     with open ("Database Students Telkom.csv", 'r') as file:
-        csv_reader = csv.reader(file, delimiter='|')
+        csv_reader = csv.reader(file, delimiter=',')
         
         for row in csv_reader:
             databaseStudents.append({'name' : row[0], 'nim' : row[1], 'jurusan' : row[2], 'email' :row[3], 'password' : row[4]})
@@ -112,7 +112,7 @@ def menu():
         print("Your selection is not in the menu !!")
         os.system('cls')
         menu()
-
+        
 def user_account():
     print_header()
     nim_input = input("Enter your NIM: ")
@@ -127,7 +127,7 @@ def user_account():
                 print('---------------------------------------------------------------------')
                 print(f"|| Nama Lengkap : {row[0]}{' ' * (29-len(row[0]))} | Email : {row[3]}{' ' * (30 - len(row[3]))}")
                 print('---------------------------------------------------------------------')
-                print(f"|| Jurusan : {row[2]}{' ' * (73 - len(row[2]))}    | NIM   : {row[1]}{' ' * (30 - len(row[1]))}")
+                print(f"|| Jurusan : {row[2]}{' ' * (29 - len(row[2]))}      | NIM   : {row[1]}{' ' * (30 - len(row[1]))}")
                 print('---------------------------------------------------------------------')
                 break
         
@@ -138,9 +138,124 @@ def user_account():
     os.system('cls')
     dashboard_menu()
 
-def to_do_list():
-    print('print')
+class Task:
+    def __init__(self,title,description,due_date):
+        self.title = title
+        self.description = description
+        self.due_date = due_date
+        self.is_completed = False
     
+    def complete(self):
+        self.is_completed = True
+        
+class TaskManager:
+    def __init__(self):
+        self.tasks = []
+        
+    def add_task(self,title,description,due_date):
+        task = Task(title,description,due_date)
+        self.tasks.append(task)
+    
+    def view_task(self):
+        if not self.tasks:
+            print("Tugas tidak ditemukan !!")
+        else:
+            print('Tasks: ')
+            for index,task in enumerate(self.tasks, start=1):
+                status = "Selesai" if task.is_completed else "Belum Selesai"
+                print(f"{index}, {task.title} - Due: {task.due_date} - Status: {status}")
+                
+    def complete_task(self,task_index):
+        if 0 <= task_index< len(self.tasks):
+            self.tasks[task_index].complete()
+            print("Tugas telah selesai")
+        
+        else:
+            print("Tugas tidak dikerjakan")
+
+
+def save_tasks_to_file(tasks):
+    with open("tasks.txt", "w") as file:
+        for task in tasks:
+            file.write(f"{task.title},{task.description},{task.due_date},{task.is_completed}\n")
+
+def load_tasks_from_file():
+    tasks = []
+    try:
+        with open("tasks.txt", "r") as file:
+            for line in file:
+                data = line.strip().split(',')
+                title, description, due_date, is_completed = data
+                is_completed = is_completed == "True"  # Convert string to boolean
+                task = Task(title, description, due_date)
+                task.is_completed = is_completed
+                tasks.append(task)
+    except FileNotFoundError:
+        pass
+    return tasks
+
+def to_do_list():
+
+    task_manager = TaskManager()
+    task_manager.tasks = load_tasks_from_file()
+
+    while True:
+        print_header()
+        print('---------------------------------------------------------------------')
+        print('|| [1]. Tambahkan Tugas           | [2]. Lihat Deadline Tugas      ||')
+        print('|| [3]. Selesaikan Tugas          | [4]. Keluar                    ||')
+        print('---------------------------------------------------------------------')
+        pilihan = input("\> ")
+        print('\n')
+
+        if pilihan == '1':
+            os.system('cls')
+            print_header()
+            title = input('|| Judul Tugas : ')
+            description = input('|| Deskripsi Tugas : ')
+            due_date = input("|| Tanggal Deadline (YYYY-MM-DD) : ")
+            task_manager.add_task(title, description, due_date)
+            save_tasks_to_file(task_manager.tasks)
+            print("-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+            print("   > TUGAS BERHASIL DI UPDATE <  ")
+            print('\n')
+            
+            os.system('pause')
+            os.system('cls')
+
+        elif pilihan == '2':
+            os.system('cls')
+            print_header()
+            task_manager.view_task()
+            
+            print('\n')
+            
+            os.system('pause')
+            os.system('cls')
+
+        elif pilihan == '3':
+            print_header()
+            task_index = int(input("|| Masukan Index Tugas Untuk Diselesaikan : ")) - 1
+            task_manager.complete_task(task_index)
+            save_tasks_to_file(task_manager.tasks)
+            
+            os.system('pause')
+            os.system('cls')
+
+        elif pilihan == '4':
+            print_header()
+            
+            os.system('cls')
+            dashboard_menu()
+            break  # Keluar dari loop dan program
+
+        else:
+            print_header()
+            print("Pilihan Anda tidak ada dalam menu!")
+            
+            os.system('cls')
+            to_do_list()
+            
 def dashboard_menu():
     print_header()
     
@@ -177,4 +292,5 @@ def dashboard_menu():
         dashboard_menu()
         
 # all function
-menu()
+if __name__ == "__main__":
+    menu()
