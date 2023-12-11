@@ -11,7 +11,11 @@ Developer :
   > Practicum Assistant at Basic Computing Laboratory <br>
 
 ### Version 4.2
-
+TaskMaster application version 4.2 has 1 mode, namely user mdoe. Users can use the features below :
 #### User Mode Enhancements:
+     - Sign up and Sign in
+     - Look at the user profile
+     - Visit the official website Learning Management System (LMS)
+     - Add task deadlines, view task deadlines and complete task deadlines
   
   <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=8F3A84&height=120&section=footer"/>
