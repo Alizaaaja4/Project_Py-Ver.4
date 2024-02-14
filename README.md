@@ -8,9 +8,9 @@
 
 ## Get Started ▶️
 ### Clone the Repository
-    git clone https://github.com/Alizaaaja4/Shell_PlayStore.git
+    git clone https://github.com/Alizaaaja4/Project_Py-Ver.4.git
 
 ### Run my Programs with
-    python TaskMaster.py
+    python TaskMaster-Ver4.2.py
   
   <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=8F3A84&height=120&section=footer"/>
